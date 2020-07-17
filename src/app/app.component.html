@@ -1,0 +1,38 @@
+<div id="main">
+  <div id="table-wrapper">
+    <div id="table-container">
+
+      <div id="table-header" class="indent-1">
+        <div (click)="reset()">
+          <fa-icon [icon]="faHistory"></fa-icon>
+          <span>Recent Transactions</span>
+        </div>
+      </div>
+
+      <div id="descriptions-container">
+        <div id="inner" class="indent-1">
+          <span class="blurred" *ngFor="let element of descriptions">
+              {{ element }}
+          </span>
+        </div>
+      </div>
+
+      <div id="table">
+        <cdk-virtual-scroll-viewport [itemSize]="30" scrolledIndexChange="" class="example-viewport" id="scroll-table" (scroll)="onScroll($event)">
+          <div *cdkVirtualFor="let element of transactions$">
+            <span class="table-item">
+              <span class="status-type" [style.backgroundColor]="statusColor[element.type]">{{ element.type }}</span>
+            </span>
+            <span class="table-item">{{ element.amountXTZ}} XTZ</span>
+            <span class="table-item blurred">{{ element.amountUSD | currency :'USD':''}} USD</span>
+            <span class="table-item">{{ element.date | date :'MMM d, y, hh:mm' }}</span>
+            <span class="table-item">{{ element.address | shorten}}</span>
+          </div>
+          <div *ngIf="loading || (transactions$ | async).length === 0">
+            ...Loading
+          </div>
+        </cdk-virtual-scroll-viewport>
+      </div>
+    </div>
+  </div>
+</div>
